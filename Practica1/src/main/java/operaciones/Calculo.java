@@ -136,7 +136,6 @@ public class Calculo {
             }
             resolverDiagonalPrincipal(matriz);
         }
-        resolverDiagonalPrincipal(matriz);
     }
 
     //Termina de resolver el sistema por Gauss-Jordan
@@ -155,7 +154,6 @@ public class Calculo {
             }
             resolverDiagonalPrincipal(matriz);
         }
-        resolverDiagonalPrincipal(matriz);
     }
 
     //Imprime el resultado del sistema de ecuaciones

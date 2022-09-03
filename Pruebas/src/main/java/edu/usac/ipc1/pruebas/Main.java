@@ -4,83 +4,51 @@ import java.util.Scanner;
 
 public class Main {
 
+    static int tablero[][] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+
     public static void main(String[] args) {
-        Scanner lector;
-        int numeroEcuaciones;
-        double[][] matriz;
-
-        try {
-            lector = new Scanner(System.in);
-            System.out.println("Indique el tamaño del sistema de ecuaciones lineales:");
-            numeroEcuaciones = lector.nextInt();
-            if (numeroEcuaciones > 0) {
-                System.out.println("Indique los coeficientes de cada ecuación utilizando una cadena de valores separados por comas:");
-                matriz = new double[numeroEcuaciones][numeroEcuaciones + 1];
-                for (int i = 0; i < numeroEcuaciones; i++) {
-                    System.out.println("f" + i + " = ");
-                    lector = new Scanner(System.in);
-                    String[] cadena = lector.nextLine().split(",");
-                    for (int j = 0; j < cadena.length; j++) {
-                        matriz[i][j] = Double.parseDouble(cadena[j]);
-                    }
-                }
-                imprimirMatriz(matriz);
-                resolverSistema(matriz);
-            } else {
-                System.out.println("El sistema no tiene ecuaciones");
-            }
-        } catch (Exception e) {
-            System.err.println("[Error-Cálculo]: " + e);
+        imprimirPiramide(7);
+    }
+//System.out.println(calcularDigitos(1));
+        //System.out.println(calcularCombinaciones(3,2));
+        /*private static int calcularCombinaciones(int n, int m){
+        if(n < 2 || m < 2 || m == n){
+            return 1;
+        }else{
+            return ((calcularCombinaciones(n-1, m))+(calcularCombinaciones(n-1, m-1)));
         }
+    } */
+    static int calcularDigitos(int numero) {
+        int cantidadDigitos = 0;
+        while (numero != 0) {
+            numero = numero / 10;
+            cantidadDigitos++;
+        }
+        return cantidadDigitos;
     }
 
-    private static void imprimirMatriz(double matriz[][]) {
-        for (int i = 0; i < matriz.length; i++) {
-            for (int j = 0; j < matriz[0].length; j++) {
-                System.out.print((matriz[i][j]) + "\t");
-            }
-            System.out.println("");
-        }
-        System.out.println("matriz.length " + matriz.length);
-        System.out.println("matriz[0].length " + matriz[0].length);
-    }
-
-    private static void resolverSistema(double matriz[][]) {
-        double pivote;
-        //Se recorre la matriz
-        for (int i = 0; i < matriz.length; i++) {
-            //El pivote va a tomar los valores de la diagonal principal
-            pivote = matriz[i][i];
-            for (int j = 0; j < matriz[0].length; j++) {
-                if (j == 0) {
-                    System.out.print("L" + i + "/" + pivote);
+    /*static void imprimirPiramide(int filas) {
+        if (filas > 0) {
+            for (int i = 0; i < filas; i++) {
+                for (int espacio = 0; espacio < (filas - i); espacio++) {
+                    System.out.print("");
                 }
-                //Se dividen todos los elementos de la matriz dentro del pivote
-                //para hacer que los números de la diagonal principal sean 1.0
-                matriz[i][j] = matriz[i][j] / pivote;
-            }
-            System.out.println("");
-            imprimirMatriz(matriz);
-        }
-        for (int i = 0; i < matriz.length; i++) {
-            pivote = matriz[i][i];
-            if (i < matriz.length - 1) {
-                for (int j = i + 1; j < matriz.length; j++) {
-                    pivote = matriz[i][i];
-                    for (int k = 0; k < matriz[0].length; k++) {
-                        matriz[j][k] = matriz[j][k] - (pivote * matriz[i][k]);
-                    }
+                for (int asterisco = 0; asterisco < (i * 2) - 1; asterisco++) {
+                    System.out.print("*");
                 }
+                System.out.println("");
             }
         }
-        for(int i = (matriz.length - 1); i >=1 ; i--){
-            for(int j = i-1; j>=0 ; j--){
-                pivote = matriz[j][i];
-                for(int k = matriz[0].length - 1; k >=0 ;k--){
-                    matriz[j][k] = matriz[j][k] - (pivote * matriz[i][k]);
+    }*/
+    
+    static void imprimirPiramide(int filas) {
+        if (filas > 0) {
+            for (int i = 1; i <= filas; i++) {
+                for (int asterisco = 1; asterisco < (i * 2); asterisco++) {
+                    System.out.print("*");
                 }
+                System.out.println("");
             }
         }
-        imprimirMatriz(matriz);
     }
 }

@@ -61,9 +61,9 @@ public class Estadistica {
         cadena = lector.nextLine();
         valores = cadena.split(",");
         for (int i = 0; i < valores.length; i++) {
-            media = media + Double.parseDouble(valores[i]);
+            media = media + (1/Double.parseDouble(valores[i]));
         }
-        media = media / (valores.length);
+        media = (valores.length)/media;
     }
 
     private void calcularVarianza() {

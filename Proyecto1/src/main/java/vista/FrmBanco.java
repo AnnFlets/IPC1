@@ -50,7 +50,13 @@ public class FrmBanco extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tblCuentasAsociadasMC = new javax.swing.JTable();
         jPanel5 = new javax.swing.JPanel();
+        cmbCuentaD = new javax.swing.JComboBox<>();
+        txtMontoD = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        btnAceptarD = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
+        btnA = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
 
@@ -116,8 +122,9 @@ public class FrmBanco extends javax.swing.JFrame {
         jPanel4.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 330, -1, -1));
         jPanel4.add(txtCuiMC, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 350, 320, -1));
 
-        btnBuscarCuentasMC.setText("Buscar cuentas asociadas");
-        jPanel4.add(btnBuscarCuentasMC, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 330, 200, 40));
+        btnBuscarCuentasMC.setText("BUSCAR CUENTAS ASOCIADAS");
+        btnBuscarCuentasMC.setEnabled(false);
+        jPanel4.add(btnBuscarCuentasMC, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 330, 260, 40));
 
         tblCuentasAsociadasMC.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -134,9 +141,26 @@ public class FrmBanco extends javax.swing.JFrame {
         jTabbedPane1.addTab("Mostrar clientes", jPanel4);
 
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel5.add(cmbCuentaD, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 120, 340, -1));
+        jPanel5.add(txtMontoD, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 210, 340, -1));
+
+        jLabel6.setText("Cuenta");
+        jPanel5.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 100, -1, -1));
+
+        jLabel7.setText("Monto");
+        jPanel5.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 190, -1, -1));
+
+        btnAceptarD.setText("ACEPTAR");
+        jPanel5.add(btnAceptarD, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 310, -1, -1));
+
         jTabbedPane1.addTab("Depósito", jPanel5);
 
         jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        btnA.setText("A");
+        jPanel6.add(btnA, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 160, -1, -1));
+
         jTabbedPane1.addTab("Transferencia", jPanel6);
 
         jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -190,15 +214,20 @@ public class FrmBanco extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton btnA;
+    public javax.swing.JButton btnAceptarD;
     public javax.swing.JButton btnBuscarCuentasMC;
     public javax.swing.JButton btnCrearCCl;
     public javax.swing.JButton btnCrearCCu;
     public javax.swing.JComboBox<String> cmbClienteCCu;
+    public javax.swing.JComboBox<String> cmbCuentaD;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -216,6 +245,7 @@ public class FrmBanco extends javax.swing.JFrame {
     public javax.swing.JTextField txtApellidoCCl;
     public javax.swing.JTextField txtCuiCCl;
     public javax.swing.JTextField txtCuiMC;
+    public javax.swing.JTextField txtMontoD;
     public javax.swing.JTextField txtNombreCCl;
     // End of variables declaration//GEN-END:variables
 }

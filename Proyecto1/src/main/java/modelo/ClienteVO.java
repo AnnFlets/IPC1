@@ -7,19 +7,12 @@ public class ClienteVO {
     private String apellidoCliente;
     private CuentaVO[] cuentasAsociadas;
     
-    //Constructor vacío
-    public ClienteVO() {
+    //Constructo vacío
+    public ClienteVO(){
     }
     
     //Constructor con parámetros
     public ClienteVO(String cuiCliente, String nombreCliente, String apellidoCliente) {
-        this.cuiCliente = cuiCliente;
-        this.nombreCliente = nombreCliente;
-        this.apellidoCliente = apellidoCliente;
-    }
-    
-    //Constructor con todos los atributos de la clase
-    public ClienteVO(String cuiCliente, String nombreCliente, String apellidoCliente, CuentaVO[] cuentasAsociadas) {
         this.cuiCliente = cuiCliente;
         this.nombreCliente = nombreCliente;
         this.apellidoCliente = apellidoCliente;
@@ -35,7 +28,7 @@ public class ClienteVO {
             }
         }
     }
-    
+
     //Métodos Getter & Setter
     public String getCuiCliente() {
         return cuiCliente;

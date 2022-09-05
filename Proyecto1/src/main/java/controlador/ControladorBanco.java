@@ -38,6 +38,7 @@ public class ControladorBanco implements ActionListener {
         this.vBanco.btnBuscarCuentasMC.addActionListener(this);
         this.vBanco.btnAceptarD.addActionListener(this);
         this.vBanco.btnA.addActionListener(this);
+        this.vBanco.btnAceptarPS.addActionListener(this);
     }
 
     //---- CREAR CLIENTE ----
@@ -218,15 +219,15 @@ public class ControladorBanco implements ActionListener {
 
     //---- DEPOSITAR ----
     private void realizarDeposito() {
-        //try {
-        if (Double.parseDouble(this.vBanco.txtMontoD.getText()) > 0) {
-            agreagarDepositoCuentaD();
-        } else {
-            this.vBanco.jopMensaje.showMessageDialog(null, "El monto del depósito debe ser mayor a 0.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        try {
+            if (Double.parseDouble(this.vBanco.txtMontoD.getText()) > 0) {
+                agreagarDepositoCuentaD();
+            } else {
+                this.vBanco.jopMensaje.showMessageDialog(null, "El monto del depósito debe ser mayor a 0.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (Exception e) {
+            this.vBanco.jopMensaje.showMessageDialog(null, "El monto debe ser un número real.", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
-        //} catch (Exception e) {
-        //    this.vBanco.jopMensaje.showMessageDialog(null, "El monto debe ser un número real.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        //}
     }
 
     private void agreagarDepositoCuentaD() {
@@ -244,19 +245,74 @@ public class ControladorBanco implements ActionListener {
                 saldoCuenta = cuentaTransacciones.getSaldoCuenta();
                 cuentaTransacciones.setSaldoCuenta(saldoCuenta + Double.parseDouble(this.vBanco.txtMontoD.getText()));
                 this.vBanco.jopMensaje.showMessageDialog(null, "Depósito realizado con éxito", "Información", JOptionPane.INFORMATION_MESSAGE);
+                regresarEstadoInicialD();
                 numeroTransaccion++;
                 break;
             }
         }
     }
 
-    private void llenarComboBoxCuentasD() {
-        borrarComboBoxCuentasD();
+    private void regresarEstadoInicialD() {
+        this.vBanco.cmbCuentaD.setSelectedIndex(0);
+        this.vBanco.txtMontoD.setText("");
+    }
+
+    //---- PAGO DE SERVICIOS ----
+    private void realizarPago() {
+        try {
+            if (Double.parseDouble(this.vBanco.txtMontoPS.getText()) > 0) {
+                if (Double.parseDouble(this.vBanco.txtMontoPS.getText()) <= cuenta[this.vBanco.cmbCuentaD.getSelectedIndex()].getSaldoCuenta()){
+                    agregarPagoCuentaPS();
+                }else{
+                    this.vBanco.jopMensaje.showMessageDialog(null, "La cuenta de origen no tiene suficientes fondos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                }
+            } else {
+                this.vBanco.jopMensaje.showMessageDialog(null, "El monto del depósito debe ser mayor a 0.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (Exception e) {
+            this.vBanco.jopMensaje.showMessageDialog(null, "El monto debe ser un número real.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    private void agregarPagoCuentaPS() {
+        CuentaVO cuentaTransacciones = cuenta[this.vBanco.cmbCuentaDebitarPS.getSelectedIndex()];
+        TransaccionVO transaccionRealizada = new TransaccionVO();
+        for (int i = 0; i < cuenta.length; i++) {
+            if (cuenta[i] != null) {
+                transaccionRealizada.setNumeroTransaccion(numeroTransaccion);
+                transaccionRealizada.setCuentaTransaccion(cuenta[this.vBanco.cmbCuentaDebitarPS.getSelectedIndex()].getIdentificadorCuenta());
+                transaccionRealizada.setFechaTransaccion(fechaYHora.devolverFechaHoraActual());
+                transaccionRealizada.setDetalleTransaccion(this.vBanco.cmbTipoServicioPS.getSelectedItem().toString());
+                transaccionRealizada.setDebitoTransaccion(Double.parseDouble(this.vBanco.txtMontoPS.getText()));
+                transaccionRealizada.setCreditoTransaccion(0);
+                cuentaTransacciones.agregarTransaccion(transaccionRealizada);
+                saldoCuenta = cuentaTransacciones.getSaldoCuenta();
+                cuentaTransacciones.setSaldoCuenta(saldoCuenta - Double.parseDouble(this.vBanco.txtMontoPS.getText()));
+                this.vBanco.jopMensaje.showMessageDialog(null, "Pago realizado con éxito", "Información", JOptionPane.INFORMATION_MESSAGE);
+                regresarEstadoInicialPS();
+                numeroTransaccion++;
+                break;
+            }
+        }
+    }
+
+    private void regresarEstadoInicialPS() {
+        this.vBanco.cmbCuentaDebitarPS.setSelectedIndex(0);
+        this.vBanco.cmbTipoServicioPS.setSelectedIndex(0);
+        this.vBanco.txtMontoPS.setText("");
+    }
+
+    //---- COMPLEMENTARIOS ----
+    //Llenar los comboBox que requieren de la misma información sobre las cuentas
+    private void llenarComboBoxesCuentas() {
+        borrarComboBoxesCuentas();
         for (int i = 0; i < cuenta.length; i++) {
             if (cuenta[i] != null) {
                 for (int j = 0; j < cliente.length; j++) {
                     if (cliente[j] != null && cliente[j].getCuiCliente().equals(cuenta[i].getClienteCuenta())) {
                         this.vBanco.cmbCuentaD.addItem(cuenta[i].getIdentificadorCuenta() + " - "
+                                + cliente[j].getNombreCliente() + " " + cliente[j].getApellidoCliente());
+                        this.vBanco.cmbCuentaDebitarPS.addItem(cuenta[i].getIdentificadorCuenta() + " - "
                                 + cliente[j].getNombreCliente() + " " + cliente[j].getApellidoCliente());
                     }
                 }
@@ -264,12 +320,10 @@ public class ControladorBanco implements ActionListener {
         }
     }
 
-    private void borrarComboBoxCuentasD() {
+    //Borrar los elementos de los comboBox que tienen la misma información sobre las cuentas
+    private void borrarComboBoxesCuentas() {
         this.vBanco.cmbCuentaD.removeAllItems();
-    }
-
-    private void regresarEstadoInicialComboBoxCuentasD() {
-        this.vBanco.cmbCuentaD.setSelectedIndex(0);
+        this.vBanco.cmbCuentaDebitarPS.removeAllItems();
     }
 
     //Administración de clicks
@@ -280,12 +334,15 @@ public class ControladorBanco implements ActionListener {
             llenarComboBoxClienteCCu();
             limpiarTablaCliente();
             agregarFilaTablaCliente();
+            this.vBanco.btnCrearCCu.setEnabled(true);
             this.vBanco.btnBuscarCuentasMC.setEnabled(true);
         }
         if (e.getSource() == this.vBanco.btnCrearCCu) {
             crearCuentaCliente();
             regresarEstadoInicialComboBoxClienteCCu();
-            llenarComboBoxCuentasD();
+            llenarComboBoxesCuentas();
+            this.vBanco.btnAceptarD.setEnabled(true);
+            this.vBanco.btnAceptarPS.setEnabled(true);
         }
         if (e.getSource() == this.vBanco.btnBuscarCuentasMC) {
             if (verificarExistenciaCliente()) {
@@ -299,6 +356,9 @@ public class ControladorBanco implements ActionListener {
         }
         if (e.getSource() == this.vBanco.btnA) {
             algo();
+        }
+        if (e.getSource() == this.vBanco.btnAceptarPS) {
+            realizarPago();
         }
     }
 

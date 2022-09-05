@@ -8,6 +8,7 @@ public class TransaccionVO {
     private String detalleTransaccion;
     private double debitoTransaccion;
     private double creditoTransaccion;
+    private double saldoTransaccion;
 
     //Constructo vacío
     public TransaccionVO() {
@@ -60,5 +61,12 @@ public class TransaccionVO {
 
     public void setCreditoTransaccion(double creditoTransaccion) {
         this.creditoTransaccion = creditoTransaccion;
+    }
+    public double getSaldoTransaccion() {
+        return saldoTransaccion;
+    }
+
+    public void setSaldoTransaccion(double saldoTransaccion) {
+        this.saldoTransaccion = saldoTransaccion;
     }
 }

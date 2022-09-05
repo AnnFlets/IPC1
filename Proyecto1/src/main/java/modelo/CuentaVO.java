@@ -52,5 +52,13 @@ public class CuentaVO {
 
     public void setSaldoCuenta(double saldoCuenta) {
         this.saldoCuenta = saldoCuenta;
-    } 
+    }
+
+    public TransaccionVO[] getTransaccionesRealizadas() {
+        return transaccionesRealizadas;
+    }
+
+    public void setTransaccionesRealizadas(TransaccionVO[] transaccionesRealizadas) {
+        this.transaccionesRealizadas = transaccionesRealizadas;
+    }
 }

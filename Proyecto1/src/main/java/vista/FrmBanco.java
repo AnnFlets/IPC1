@@ -67,13 +67,16 @@ public class FrmBanco extends javax.swing.JFrame {
         btnAceptarPS = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        tblTransaccionesH = new javax.swing.JTable();
+        txtApellidoH = new javax.swing.JTextField();
+        txtCuiH = new javax.swing.JTextField();
+        txtNombreH = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
+        btnMostrarTransaccionesH = new javax.swing.JButton();
+        cmbCuentaH = new javax.swing.JComboBox<>();
+        jLabel14 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Banco");
@@ -205,7 +208,7 @@ public class FrmBanco extends javax.swing.JFrame {
 
         jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblTransaccionesH.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -213,12 +216,21 @@ public class FrmBanco extends javax.swing.JFrame {
                 "ID", "Fecha", "Detalle", "Crédito", "Débito", "Saldo disponible"
             }
         ));
-        jScrollPane3.setViewportView(jTable1);
+        jScrollPane3.setViewportView(tblTransaccionesH);
 
         jPanel8.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, 710, 260));
-        jPanel8.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 220, 230, -1));
-        jPanel8.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 230, -1));
-        jPanel8.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 220, 230, -1));
+
+        txtApellidoH.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        txtApellidoH.setEnabled(false);
+        jPanel8.add(txtApellidoH, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 220, 230, -1));
+
+        txtCuiH.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        txtCuiH.setEnabled(false);
+        jPanel8.add(txtCuiH, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 230, -1));
+
+        txtNombreH.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        txtNombreH.setEnabled(false);
+        jPanel8.add(txtNombreH, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 220, 230, -1));
 
         jLabel11.setText("CUI");
         jPanel8.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 200, -1, -1));
@@ -228,6 +240,15 @@ public class FrmBanco extends javax.swing.JFrame {
 
         jLabel13.setText("Nombre");
         jPanel8.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 200, -1, -1));
+
+        btnMostrarTransaccionesH.setText("MOSTRAR TRANSACCIONES");
+        btnMostrarTransaccionesH.setEnabled(false);
+        jPanel8.add(btnMostrarTransaccionesH, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 50, 240, 50));
+
+        jPanel8.add(cmbCuentaH, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 320, -1));
+
+        jLabel14.setText("ID Cuenta");
+        jPanel8.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 50, -1, -1));
 
         jTabbedPane1.addTab("Historial", jPanel8);
 
@@ -282,15 +303,18 @@ public class FrmBanco extends javax.swing.JFrame {
     public javax.swing.JButton btnBuscarCuentasMC;
     public javax.swing.JButton btnCrearCCl;
     public javax.swing.JButton btnCrearCCu;
+    public javax.swing.JButton btnMostrarTransaccionesH;
     public javax.swing.JComboBox<String> cmbClienteCCu;
     public javax.swing.JComboBox<String> cmbCuentaD;
     public javax.swing.JComboBox<String> cmbCuentaDebitarPS;
+    public javax.swing.JComboBox<String> cmbCuentaH;
     public javax.swing.JComboBox<String> cmbTipoServicioPS;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -311,18 +335,18 @@ public class FrmBanco extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     public javax.swing.JOptionPane jopMensaje;
     public javax.swing.JTable tblClientesMC;
     public javax.swing.JTable tblCuentasAsociadasMC;
+    public javax.swing.JTable tblTransaccionesH;
     public javax.swing.JTextField txtApellidoCCl;
+    public javax.swing.JTextField txtApellidoH;
     public javax.swing.JTextField txtCuiCCl;
+    public javax.swing.JTextField txtCuiH;
     public javax.swing.JTextField txtCuiMC;
     public javax.swing.JTextField txtMontoD;
     public javax.swing.JTextField txtMontoPS;
     public javax.swing.JTextField txtNombreCCl;
+    public javax.swing.JTextField txtNombreH;
     // End of variables declaration//GEN-END:variables
 }

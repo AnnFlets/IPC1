@@ -179,7 +179,7 @@ public class FrmBanco extends javax.swing.JFrame {
         jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         btnA.setText("A");
-        jPanel6.add(btnA, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 160, -1, -1));
+        jPanel6.add(btnA, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 160, -1, -1));
 
         jTabbedPane1.addTab("Transferencia", jPanel6);
 

@@ -11,7 +11,6 @@ import modelo.TransaccionVO;
 import vista.FrmBanco;
 
 public class ControladorBanco implements ActionListener {
-
     //Objetos y variables
     FrmBanco vBanco = new FrmBanco();
     ClienteVO clienteVO = new ClienteVO();

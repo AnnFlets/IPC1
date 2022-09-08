@@ -37,12 +37,12 @@ public class ControladorBanco implements ActionListener {
         this.vBanco.btnCrearCCu.addActionListener(this);
         this.vBanco.btnBuscarCuentasMC.addActionListener(this);
         this.vBanco.btnAceptarD.addActionListener(this);
-        this.vBanco.btnA.addActionListener(this);
         this.vBanco.btnAceptarPS.addActionListener(this);
         this.vBanco.btnMostrarTransaccionesH.addActionListener(this);
+        this.vBanco.btnAceptarT.addActionListener(this);
     }
 
-    //---- CREAR CLIENTE ----
+    //----- CREAR CLIENTE -----
     private void registrarCliente() {
         if (!this.vBanco.txtCuiCCl.getText().isBlank()
                 && !this.vBanco.txtNombreCCl.getText().isBlank()
@@ -93,25 +93,20 @@ public class ControladorBanco implements ActionListener {
         this.vBanco.txtApellidoCCl.setText("");
     }
 
-    //---- CREAR CUENTA ----
+    //----- CREAR CUENTA -----
     private void crearCuentaCliente() {
         ClienteVO clienteCuentas = cliente[this.vBanco.cmbClienteCCu.getSelectedIndex()];
         CuentaVO cuentaAsociada = new CuentaVO();
         if (verificarCuentasCliente()) {
-            for (int i = 0; i < cliente.length; i++) {
-                if (cliente[i] != null) {
-                    cuentaAsociada.setIdentificadorCuenta(numeroCuenta);
-                    cuentaAsociada.setClienteCuenta(cliente[this.vBanco.cmbClienteCCu.getSelectedIndex()].getCuiCliente());
-                    cuentaAsociada.setSaldoCuenta(0);
-                    clienteCuentas.agregarCuentaAsociada(cuentaAsociada);
-                    cuenta[contadorCuenta] = new CuentaVO(cuentaAsociada.getIdentificadorCuenta(),
-                            cuentaAsociada.getClienteCuenta(), cuentaAsociada.getSaldoCuenta());
-                    this.vBanco.jopMensaje.showMessageDialog(null, "Cuenta creada con éxito", "Información", JOptionPane.INFORMATION_MESSAGE);
-                    numeroCuenta++;
-                    contadorCuenta++;
-                    break;
-                }
-            }
+            cuentaAsociada.setIdentificadorCuenta(numeroCuenta);
+            cuentaAsociada.setClienteCuenta(cliente[this.vBanco.cmbClienteCCu.getSelectedIndex()].getCuiCliente());
+            cuentaAsociada.setSaldoCuenta(0);
+            clienteCuentas.agregarCuentaAsociada(cuentaAsociada);
+            cuenta[contadorCuenta] = new CuentaVO(cuentaAsociada.getIdentificadorCuenta(),
+                    cuentaAsociada.getClienteCuenta(), cuentaAsociada.getSaldoCuenta());
+            this.vBanco.jopMensaje.showMessageDialog(null, "Cuenta creada con éxito", "Información", JOptionPane.INFORMATION_MESSAGE);
+            numeroCuenta++;
+            contadorCuenta++;
         } else {
             this.vBanco.jopMensaje.showMessageDialog(null, "No es posible crear más cuentas para el cliente seleccionado", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
@@ -160,11 +155,12 @@ public class ControladorBanco implements ActionListener {
     }
 
     private void tablaCuentasAsociadas() {
-        if (!this.vBanco.txtCuiMC.getText().isBlank()) {
+        if (verificarExistenciaCliente()) {
             limpiarTablaCuenta();
             agregarFilaTablaCuenta();
         } else {
-            this.vBanco.jopMensaje.showMessageDialog(null, "No ha ingresado un número de CUI.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            limpiarTablaCuenta();
+            this.vBanco.jopMensaje.showMessageDialog(null, "No existe un cliente con el número de CUI ingresado.", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }
 
@@ -181,6 +177,7 @@ public class ControladorBanco implements ActionListener {
                 }
             }
         } else {
+            limpiarTablaCuenta();
             this.vBanco.jopMensaje.showMessageDialog(null, "El cliente con número de CUI ingresado no tiene cuentas asociadas.", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }
@@ -218,11 +215,11 @@ public class ControladorBanco implements ActionListener {
         this.vBanco.tblCuentasAsociadasMC.updateUI();
     }
 
-    //---- DEPOSITAR ----
+    //----- DEPOSITAR -----
     private void realizarDeposito() {
         try {
             if (Double.parseDouble(this.vBanco.txtMontoD.getText()) > 0) {
-                agreagarDepositoCuentaD();
+                agregarDepositoCuentaD();
             } else {
                 this.vBanco.jopMensaje.showMessageDialog(null, "El monto del depósito debe ser mayor a 0.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             }
@@ -231,32 +228,89 @@ public class ControladorBanco implements ActionListener {
         }
     }
 
-    private void agreagarDepositoCuentaD() {
+    private void agregarDepositoCuentaD() {
         CuentaVO cuentaTransacciones = cuenta[this.vBanco.cmbCuentaD.getSelectedIndex()];
         TransaccionVO transaccionRealizada = new TransaccionVO();
-        for (int i = 0; i < cuenta.length; i++) {
-            if (cuenta[i] != null) {
-                transaccionRealizada.setNumeroTransaccion(numeroTransaccion);
-                transaccionRealizada.setCuentaTransaccion(cuenta[this.vBanco.cmbCuentaD.getSelectedIndex()].getIdentificadorCuenta());
-                transaccionRealizada.setFechaTransaccion(fechaYHora.devolverFechaHoraActual());
-                transaccionRealizada.setDetalleTransaccion("Depósito");
-                transaccionRealizada.setDebitoTransaccion(0);
-                transaccionRealizada.setCreditoTransaccion(Double.parseDouble(this.vBanco.txtMontoD.getText()));
-                saldoCuenta = cuentaTransacciones.getSaldoCuenta();
-                transaccionRealizada.setSaldoTransaccion((double) Math.round((saldoCuenta + Double.parseDouble(this.vBanco.txtMontoD.getText())) * 100d) / 100d);
-                cuentaTransacciones.agregarTransaccion(transaccionRealizada);
-                cuentaTransacciones.setSaldoCuenta((double) Math.round((saldoCuenta + Double.parseDouble(this.vBanco.txtMontoD.getText())) * 100d) / 100d);
-                this.vBanco.jopMensaje.showMessageDialog(null, "Depósito realizado con éxito", "Información", JOptionPane.INFORMATION_MESSAGE);
-                regresarEstadoInicialD();
-                numeroTransaccion++;
-                break;
-            }
-        }
+        transaccionRealizada.setNumeroTransaccion(numeroTransaccion);
+        transaccionRealizada.setCuentaTransaccion(cuenta[this.vBanco.cmbCuentaD.getSelectedIndex()].getIdentificadorCuenta());
+        transaccionRealizada.setFechaTransaccion(fechaYHora.devolverFechaHoraActual());
+        transaccionRealizada.setDetalleTransaccion("Depósito");
+        transaccionRealizada.setDebitoTransaccion(0);
+        transaccionRealizada.setCreditoTransaccion(Double.parseDouble(this.vBanco.txtMontoD.getText()));
+        saldoCuenta = cuentaTransacciones.getSaldoCuenta();
+        transaccionRealizada.setSaldoTransaccion((double) Math.round((saldoCuenta + Double.parseDouble(this.vBanco.txtMontoD.getText())) * 100d) / 100d);
+        cuentaTransacciones.agregarTransaccion(transaccionRealizada);
+        cuentaTransacciones.setSaldoCuenta((double) Math.round((saldoCuenta + Double.parseDouble(this.vBanco.txtMontoD.getText())) * 100d) / 100d);
+        this.vBanco.jopMensaje.showMessageDialog(null, "Depósito realizado con éxito", "Información", JOptionPane.INFORMATION_MESSAGE);
+        regresarEstadoInicialD();
+        numeroTransaccion++;
     }
 
     private void regresarEstadoInicialD() {
         this.vBanco.cmbCuentaD.setSelectedIndex(0);
         this.vBanco.txtMontoD.setText("");
+    }
+
+    //---- TRANSFERENCIA ----
+    private void realizarTransferencia() {
+        try {
+            if (this.vBanco.cmbCuentaOrigenT.getSelectedIndex() != this.vBanco.cmbCuentaDestinoT.getSelectedIndex()) {
+                if (Double.parseDouble(this.vBanco.txtMontoT.getText()) > 0) {
+                    if (Double.parseDouble(this.vBanco.txtMontoT.getText()) <= cuenta[this.vBanco.cmbCuentaOrigenT.getSelectedIndex()].getSaldoCuenta()) {
+                        agregarTrasferenciaRetirarCuenta();
+                        agregarTransferenciaRecibirCuenta();
+                    } else {
+                        this.vBanco.jopMensaje.showMessageDialog(null, "La cuenta de origen no tiene suficientes fondos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                    }
+                } else {
+                    this.vBanco.jopMensaje.showMessageDialog(null, "El monto del depósito debe ser mayor a 0.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                }
+            } else {
+                this.vBanco.jopMensaje.showMessageDialog(null, "La cuenta origen y la cuenta destino deben ser distintas.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (Exception e) {
+            this.vBanco.jopMensaje.showMessageDialog(null, "El monto debe ser un número real.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    private void agregarTrasferenciaRetirarCuenta() {
+        CuentaVO cuentaTransacciones = cuenta[this.vBanco.cmbCuentaOrigenT.getSelectedIndex()];
+        TransaccionVO transaccionRealizada = new TransaccionVO();
+        transaccionRealizada.setNumeroTransaccion(numeroTransaccion);
+        transaccionRealizada.setCuentaTransaccion(cuenta[this.vBanco.cmbCuentaOrigenT.getSelectedIndex()].getIdentificadorCuenta());
+        transaccionRealizada.setFechaTransaccion(fechaYHora.devolverFechaHoraActual());
+        transaccionRealizada.setDetalleTransaccion("Transferencia (Retiro)");
+        transaccionRealizada.setDebitoTransaccion(Double.parseDouble(this.vBanco.txtMontoT.getText()));
+        transaccionRealizada.setCreditoTransaccion(0);
+        saldoCuenta = cuentaTransacciones.getSaldoCuenta();
+        transaccionRealizada.setSaldoTransaccion((double) Math.round((saldoCuenta - Double.parseDouble(this.vBanco.txtMontoT.getText())) * 100d) / 100d);
+        cuentaTransacciones.agregarTransaccion(transaccionRealizada);
+        cuentaTransacciones.setSaldoCuenta((double) Math.round((saldoCuenta - Double.parseDouble(this.vBanco.txtMontoT.getText())) * 100d) / 100d);
+        numeroTransaccion++;
+    }
+
+    private void agregarTransferenciaRecibirCuenta() {
+        CuentaVO cuentaTransacciones = cuenta[this.vBanco.cmbCuentaDestinoT.getSelectedIndex()];
+        TransaccionVO transaccionRealizada = new TransaccionVO();
+        transaccionRealizada.setNumeroTransaccion(numeroTransaccion);
+        transaccionRealizada.setCuentaTransaccion(cuenta[this.vBanco.cmbCuentaDestinoT.getSelectedIndex()].getIdentificadorCuenta());
+        transaccionRealizada.setFechaTransaccion(fechaYHora.devolverFechaHoraActual());
+        transaccionRealizada.setDetalleTransaccion("Trasferencia (Recibido)");
+        transaccionRealizada.setDebitoTransaccion(0);
+        transaccionRealizada.setCreditoTransaccion(Double.parseDouble(this.vBanco.txtMontoT.getText()));
+        saldoCuenta = cuentaTransacciones.getSaldoCuenta();
+        transaccionRealizada.setSaldoTransaccion((double) Math.round((saldoCuenta + Double.parseDouble(this.vBanco.txtMontoT.getText())) * 100d) / 100d);
+        cuentaTransacciones.agregarTransaccion(transaccionRealizada);
+        cuentaTransacciones.setSaldoCuenta((double) Math.round((saldoCuenta + Double.parseDouble(this.vBanco.txtMontoT.getText())) * 100d) / 100d);
+        this.vBanco.jopMensaje.showMessageDialog(null, "Transferencia realizada con éxito", "Información", JOptionPane.INFORMATION_MESSAGE);
+        regresarEstadoInicialT();
+        numeroTransaccion++;
+    }
+
+    private void regresarEstadoInicialT() {
+        this.vBanco.cmbCuentaOrigenT.setSelectedIndex(0);
+        this.vBanco.cmbCuentaDestinoT.setSelectedIndex(0);
+        this.vBanco.txtMontoT.setText("");
     }
 
     //---- PAGO DE SERVICIOS ----
@@ -279,24 +333,19 @@ public class ControladorBanco implements ActionListener {
     private void agregarPagoCuentaPS() {
         CuentaVO cuentaTransacciones = cuenta[this.vBanco.cmbCuentaDebitarPS.getSelectedIndex()];
         TransaccionVO transaccionRealizada = new TransaccionVO();
-        for (int i = 0; i < cuenta.length; i++) {
-            if (cuenta[i] != null) {
-                transaccionRealizada.setNumeroTransaccion(numeroTransaccion);
-                transaccionRealizada.setCuentaTransaccion(cuenta[this.vBanco.cmbCuentaDebitarPS.getSelectedIndex()].getIdentificadorCuenta());
-                transaccionRealizada.setFechaTransaccion(fechaYHora.devolverFechaHoraActual());
-                transaccionRealizada.setDetalleTransaccion("Pago de servicio - " + this.vBanco.cmbTipoServicioPS.getSelectedItem().toString());
-                transaccionRealizada.setDebitoTransaccion(Double.parseDouble(this.vBanco.txtMontoPS.getText()));
-                transaccionRealizada.setCreditoTransaccion(0);
-                saldoCuenta = cuentaTransacciones.getSaldoCuenta();
-                transaccionRealizada.setSaldoTransaccion((double) Math.round((saldoCuenta - Double.parseDouble(this.vBanco.txtMontoPS.getText())) * 100d) / 100d);
-                cuentaTransacciones.agregarTransaccion(transaccionRealizada);
-                cuentaTransacciones.setSaldoCuenta((double) Math.round((saldoCuenta - Double.parseDouble(this.vBanco.txtMontoPS.getText())) * 100d) / 100d);
-                this.vBanco.jopMensaje.showMessageDialog(null, "Pago realizado con éxito", "Información", JOptionPane.INFORMATION_MESSAGE);
-                regresarEstadoInicialPS();
-                numeroTransaccion++;
-                break;
-            }
-        }
+        transaccionRealizada.setNumeroTransaccion(numeroTransaccion);
+        transaccionRealizada.setCuentaTransaccion(cuenta[this.vBanco.cmbCuentaDebitarPS.getSelectedIndex()].getIdentificadorCuenta());
+        transaccionRealizada.setFechaTransaccion(fechaYHora.devolverFechaHoraActual());
+        transaccionRealizada.setDetalleTransaccion("Pago de servicio - " + this.vBanco.cmbTipoServicioPS.getSelectedItem().toString());
+        transaccionRealizada.setDebitoTransaccion(Double.parseDouble(this.vBanco.txtMontoPS.getText()));
+        transaccionRealizada.setCreditoTransaccion(0);
+        saldoCuenta = cuentaTransacciones.getSaldoCuenta();
+        transaccionRealizada.setSaldoTransaccion((double) Math.round((saldoCuenta - Double.parseDouble(this.vBanco.txtMontoPS.getText())) * 100d) / 100d);
+        cuentaTransacciones.agregarTransaccion(transaccionRealizada);
+        cuentaTransacciones.setSaldoCuenta((double) Math.round((saldoCuenta - Double.parseDouble(this.vBanco.txtMontoPS.getText())) * 100d) / 100d);
+        this.vBanco.jopMensaje.showMessageDialog(null, "Pago realizado con éxito", "Información", JOptionPane.INFORMATION_MESSAGE);
+        regresarEstadoInicialPS();
+        numeroTransaccion++;
     }
 
     private void regresarEstadoInicialPS() {
@@ -359,6 +408,10 @@ public class ControladorBanco implements ActionListener {
                         this.vBanco.cmbCuentaDebitarPS.addItem(cuenta[i].getIdentificadorCuenta() + " - "
                                 + cliente[j].getNombreCliente() + " " + cliente[j].getApellidoCliente());
                         this.vBanco.cmbCuentaH.addItem(String.valueOf(cuenta[i].getIdentificadorCuenta()));
+                        this.vBanco.cmbCuentaOrigenT.addItem(cuenta[i].getIdentificadorCuenta() + " - "
+                                + cliente[j].getNombreCliente() + " " + cliente[j].getApellidoCliente());
+                        this.vBanco.cmbCuentaDestinoT.addItem(cuenta[i].getIdentificadorCuenta() + " - "
+                                + cliente[j].getNombreCliente() + " " + cliente[j].getApellidoCliente());
                     }
                 }
             }
@@ -370,9 +423,11 @@ public class ControladorBanco implements ActionListener {
         this.vBanco.cmbCuentaD.removeAllItems();
         this.vBanco.cmbCuentaDebitarPS.removeAllItems();
         this.vBanco.cmbCuentaH.removeAllItems();
+        this.vBanco.cmbCuentaOrigenT.removeAllItems();
+        this.vBanco.cmbCuentaDestinoT.removeAllItems();
     }
 
-    //Administración de clicks
+    //Administración de clics
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == this.vBanco.btnCrearCCl) {
@@ -388,33 +443,43 @@ public class ControladorBanco implements ActionListener {
             regresarEstadoInicialComboBoxClienteCCu();
             llenarComboBoxesCuentas();
             this.vBanco.btnAceptarD.setEnabled(true);
+            this.vBanco.btnAceptarT.setEnabled(true);
             this.vBanco.btnAceptarPS.setEnabled(true);
             this.vBanco.btnMostrarTransaccionesH.setEnabled(true);
         }
         if (e.getSource() == this.vBanco.btnBuscarCuentasMC) {
-            if (verificarExistenciaCliente()) {
+            if (!this.vBanco.txtCuiMC.getText().isBlank()) {
                 tablaCuentasAsociadas();
             } else {
-                this.vBanco.jopMensaje.showMessageDialog(null, "No existe un cliente con el número de CUI ingresado.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                limpiarTablaCuenta();
+                this.vBanco.jopMensaje.showMessageDialog(null, "No ha ingresado un número de CUI.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             }
         }
         if (e.getSource() == this.vBanco.btnAceptarD) {
-            realizarDeposito();
+            if (!this.vBanco.txtMontoD.getText().isBlank()) {
+                realizarDeposito();
+            } else {
+                this.vBanco.jopMensaje.showMessageDialog(null, "No ha ingresado el monto a depositar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
         }
-        if (e.getSource() == this.vBanco.btnA) {
-            algo();
+        if (e.getSource() == this.vBanco.btnAceptarT) {
+            if (!this.vBanco.txtMontoT.getText().isBlank()) {
+                realizarTransferencia();
+            } else {
+                this.vBanco.jopMensaje.showMessageDialog(null, "No ha ingresado el monto a transferir.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            } 
         }
         if (e.getSource() == this.vBanco.btnAceptarPS) {
-            realizarPago();
+            if (!this.vBanco.txtMontoPS.getText().isBlank()) {
+                realizarPago();
+            } else {
+                this.vBanco.jopMensaje.showMessageDialog(null, "No ha ingresado el monto a pagar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
         }
         if (e.getSource() == this.vBanco.btnMostrarTransaccionesH) {
             mostrarDatosClienteTransaccion();
             limpiarTablaTransaccion();
             agregarFilaTablaTransaccion();
         }
-    }
-
-    private void algo() {
-        System.out.println("A");
     }
 }

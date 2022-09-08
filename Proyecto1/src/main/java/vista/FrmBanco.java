@@ -56,7 +56,13 @@ public class FrmBanco extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         btnAceptarD = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
-        btnA = new javax.swing.JButton();
+        jLabel15 = new javax.swing.JLabel();
+        cmbCuentaOrigenT = new javax.swing.JComboBox<>();
+        jLabel16 = new javax.swing.JLabel();
+        cmbCuentaDestinoT = new javax.swing.JComboBox<>();
+        jLabel17 = new javax.swing.JLabel();
+        txtMontoT = new javax.swing.JTextField();
+        btnAceptarT = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         cmbCuentaDebitarPS = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
@@ -178,8 +184,23 @@ public class FrmBanco extends javax.swing.JFrame {
 
         jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btnA.setText("A");
-        jPanel6.add(btnA, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 160, -1, -1));
+        jLabel15.setText("Cuenta de origen");
+        jPanel6.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 100, -1, -1));
+
+        jPanel6.add(cmbCuentaOrigenT, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 120, 340, -1));
+
+        jLabel16.setText("Cuenta de destino");
+        jPanel6.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 170, -1, -1));
+
+        jPanel6.add(cmbCuentaDestinoT, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 190, 340, -1));
+
+        jLabel17.setText("Monto");
+        jPanel6.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 250, -1, -1));
+        jPanel6.add(txtMontoT, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 270, 340, -1));
+
+        btnAceptarT.setText("ACEPTAR");
+        btnAceptarT.setEnabled(false);
+        jPanel6.add(btnAceptarT, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 370, -1, -1));
 
         jTabbedPane1.addTab("Transferencia", jPanel6);
 
@@ -297,9 +318,9 @@ public class FrmBanco extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JButton btnA;
     public javax.swing.JButton btnAceptarD;
     public javax.swing.JButton btnAceptarPS;
+    public javax.swing.JButton btnAceptarT;
     public javax.swing.JButton btnBuscarCuentasMC;
     public javax.swing.JButton btnCrearCCl;
     public javax.swing.JButton btnCrearCCu;
@@ -307,7 +328,9 @@ public class FrmBanco extends javax.swing.JFrame {
     public javax.swing.JComboBox<String> cmbClienteCCu;
     public javax.swing.JComboBox<String> cmbCuentaD;
     public javax.swing.JComboBox<String> cmbCuentaDebitarPS;
+    public javax.swing.JComboBox<String> cmbCuentaDestinoT;
     public javax.swing.JComboBox<String> cmbCuentaH;
+    public javax.swing.JComboBox<String> cmbCuentaOrigenT;
     public javax.swing.JComboBox<String> cmbTipoServicioPS;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -315,6 +338,9 @@ public class FrmBanco extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -346,6 +372,7 @@ public class FrmBanco extends javax.swing.JFrame {
     public javax.swing.JTextField txtCuiMC;
     public javax.swing.JTextField txtMontoD;
     public javax.swing.JTextField txtMontoPS;
+    public javax.swing.JTextField txtMontoT;
     public javax.swing.JTextField txtNombreCCl;
     public javax.swing.JTextField txtNombreH;
     // End of variables declaration//GEN-END:variables
